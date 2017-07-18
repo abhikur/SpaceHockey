@@ -3,10 +3,11 @@ package com.example.abhishekthakur.spacehockey;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.example.abhishekthakur.spacehockey.Logic.Direction;
 import com.example.abhishekthakur.spacehockey.Logic.Position;
@@ -18,49 +19,46 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        final Button startButton = (Button) findViewById(R.id.startButton);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startGame();
+                ((ViewGroup) startButton.getParent()).removeView(startButton);
+            }
+        });
     }
 
-    @Override
-    public boolean onTouchEvent(final MotionEvent event) {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int width = displayMetrics.widthPixels;
-        int height = displayMetrics.heightPixels;
+    private void startGame() {
+        int width = getLayoutWidth();
+        int height = getLayoutHeight();
         final Vector vector = new Vector((width / 2) - 10, (height / 2) - 10);
-        vector.setPosition(new Position(0, 0));
         vector.setHorizontalDirection(Direction.Right);
         vector.setVerticalDirection(Direction.Top);
-
-        ImageView ball = (ImageView) findViewById(R.id.ball);
-        ball.setX(364);
-        ball.setY(height);
-
-//        while(true) {
-//            ImageView ball = (ImageView) findViewById(R.id.ball);
-//            vector.changePosition();
-//            Position position = vector.currentPosition();
-//            ball.setTranslationX(position.x);
-//            ball.setTranslationY(position.y);
-//        }
-
-
-
-//        Handler handler = new Handler();
-//        for (int a = 1; a < 10000; a++) {
-//            final ImageView ball = (ImageView) findViewById(R.id.ball);
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void  run() {
-//                    Log.i("x = ", String.valueOf(ball.getX()));
-//                    Log.i("y = ", String.valueOf(ball.getY()));
-//                    vector.changePosition();
-//                    Position position = vector.currentPosition();
-//                    ball.setTranslationX(position.x);
-//                    ball.setTranslationY(position.y);
-//                }
-//            }, 100 * a);
-//        }
-        return super.onTouchEvent(event);
+        vector.setPosition(new Position(0, 0));
+        final ImageView ball = (ImageView) findViewById(R.id.ball);
+        Handler handler = new Handler();
+        for (int a = 1; a < 10000; a++) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void  run() {
+                    vector.changePosition();
+                    Position position = vector.currentPosition();
+                    ball.setTranslationX(position.x);
+                    ball.setTranslationY(position.y);
+                }
+            }, 10 * a);
+        }
     }
+
+    private int getLayoutHeight() {
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.activity_main);
+        return layout.getHeight();
+    }
+
+    private int getLayoutWidth() {
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.activity_main);
+        return layout.getWidth();
+    }
+
 }
