@@ -14,6 +14,8 @@ import com.example.abhishekthakur.spacehockey.Logic.Position;
 import com.example.abhishekthakur.spacehockey.Logic.Vector;
 
 public class MainActivity extends AppCompatActivity {
+    Vector vector;
+    ImageView ball;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,23 +34,29 @@ public class MainActivity extends AppCompatActivity {
     private void startGame() {
         int width = getLayoutWidth();
         int height = getLayoutHeight();
-        final Vector vector = new Vector((width / 2) - 10, (height / 2) - 10);
+        vector = new Vector((width / 2) - 10, (height / 2) - 10);
         vector.setHorizontalDirection(Direction.Right);
         vector.setVerticalDirection(Direction.Top);
         vector.setPosition(new Position(0, 0));
-        final ImageView ball = (ImageView) findViewById(R.id.ball);
-        Handler handler = new Handler();
-        for (int a = 1; a < 10000; a++) {
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void  run() {
-                    vector.changePosition();
-                    Position position = vector.currentPosition();
-                    ball.setTranslationX(position.x);
-                    ball.setTranslationY(position.y);
-                }
-            }, 10 * a);
+        ball = (ImageView) findViewById(R.id.ball);
+        handler.post(runnable);
+    }
+
+    private Handler handler = new Handler();
+
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            updateBallPosition();
+            handler.postDelayed(runnable, 1);
         }
+    };
+
+    private void updateBallPosition() {
+        vector.changePosition();
+        Position position = vector.currentPosition();
+        ball.setTranslationX(position.x);
+        ball.setTranslationY(position.y);
     }
 
     private int getLayoutHeight() {

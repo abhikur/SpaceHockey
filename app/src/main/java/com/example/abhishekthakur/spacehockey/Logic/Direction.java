@@ -1,25 +1,25 @@
 package com.example.abhishekthakur.spacehockey.Logic;
 
 public enum Direction {
-    Top(-2) {
+    Top(-5) {
         @Override
         public Direction reverse() {
             return Direction.Bottom;
         }
     },
-    Bottom(2) {
+    Bottom(5) {
         @Override
         public Direction reverse() {
             return Direction.Top;
         }
     },
-    Left(-1) {
+    Left(-3) {
         @Override
         public Direction reverse() {
             return Direction.Right;
         }
     },
-    Right(1) {
+    Right(3) {
         @Override
         public Direction reverse() {
             return Direction.Left;

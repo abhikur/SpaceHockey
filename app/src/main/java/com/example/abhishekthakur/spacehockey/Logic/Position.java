@@ -10,7 +10,7 @@ public class Position {
     }
 
 
-    public void update(Direction first, Direction second) {
+    void update(Direction first, Direction second) {
         x += first.getValue();
         y += second.getValue();
     }
@@ -34,11 +34,11 @@ public class Position {
         return result;
     }
 
-    public boolean isHorizontallyOutside(int horizontalExtent) {
+    boolean isHorizontallyOutside(int horizontalExtent) {
         return this.x <= -horizontalExtent || this.x >= horizontalExtent;
     }
 
-    public boolean isVerticallyOutside(int verticalExtent) {
+    boolean isVerticallyOutside(int verticalExtent) {
         return this.y <= -verticalExtent || this.y >= verticalExtent;
     }
 }
